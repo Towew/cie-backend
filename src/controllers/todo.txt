@@ -1,0 +1,170 @@
+let todos = [
+  {
+    id: 1,
+    title: "Cuci tangan",
+    isDone: true,
+  },
+  {
+    id: 2,
+    title: "Basuh masker",
+    isDone: true,
+  },
+];
+
+//Export todos
+exports.getTodos = async (req, res) => {
+  try {
+    res.send({
+      data: todos,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "Failed",
+      message: "Server Error",
+    });
+  }
+};
+
+//Get 1 Todo
+exports.getTodo = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const index = id - 1;
+    res.send({
+      status: "success",
+      data: {
+        todo: todos[index],
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+//POST todo
+exports.addTodo = async (req, res) => {
+  try {
+    todos = [...todos, req.body];
+    res.send({
+      status: "success",
+      data: {
+        todos,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+//UPDATE todo
+exports.updateTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    todos[id - 1] = { ...todos[id - 1], ...req.body };
+    res.send({
+      status: "success",
+      data: {
+        todo: todos[id - 1],
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+//DELETE todo
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    todos = todos.filter((todo) => todo.id != id);
+    res.send({
+      status: "success",
+      data: {
+        todos,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+/* // Get route untuk mengambil data
+app.get("/", (req, res) => {
+    res.send({data:todos});
+});
+
+//GET data by req params
+app.get("/todo/:id", (req, res) => {
+    const id = req.params.id;
+
+    const data = todos.find((item) => item.id == id);
+
+    if(!data){
+        return res.send({
+            error: {
+                message: `Todo with id: ${id} not found`
+            }
+        });
+    }
+
+    res.send(data);
+
+});
+
+//POST route
+app.post("/todo", (req, res) => {
+    const data = req.body;
+
+    todos.push(data);
+    res.send({
+        message: 'Insert data finished',
+        data
+    });
+});
+
+//PATCH route untuk mengupdate data
+app.patch("/todo/:id", (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+
+    todos = todos.map((item) => {
+        if(item.id == id) {
+            return data;
+        } else {
+            return item;
+        }
+    });
+
+    res.send({
+        message: "Data update success",
+        data
+    });
+
+});
+
+//DELETE route untuk menghapus data
+app.delete("/todo/:id", (req,res) => {
+    const id = req.params.id;
+
+    todos = todos.filter((item) => item.id != id)
+
+    res.send({
+        message: `Delete data with id: ${id} success`,
+    });
+}); */

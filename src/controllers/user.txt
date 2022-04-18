@@ -1,0 +1,229 @@
+const { user } = require('../../models');
+
+exports.addUsers = async (req, res) => {
+    try {
+        const data = req.body;
+
+        await user.create(data);
+
+        res.send({
+            status: 'Success',
+            message: 'Insert data completed!'
+        });
+        
+    } catch (error) {
+        console.log(error)
+        res.send({
+            status: 'Failed',
+            message: 'Server Error'
+        });
+    }
+};
+
+exports.getUsers = async (req, res) => {
+    try {
+      const data = await user.findAll({
+        attributes: {
+          exclude: ['password', 'createdAt', 'updatedAt'],
+        },
+      });
+  
+      res.send({
+        status: 'success',
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: 'failed',
+        message: 'Server Error',
+      });
+    }
+};
+  
+exports.getUser = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const data = await user.findOne({
+        attributes: {
+          exclude: ['password', 'createdAt', 'updatedAt'],
+        },
+        where: {
+          id,
+        },
+      });
+  
+      res.send({
+        status: 'success',
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: 'failed',
+        message: 'Server Error',
+      });
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const data = req.body;
+      await user.update(data, {
+        where: {
+          id,
+        },
+      });
+  
+      res.send({
+        status: 'success',
+        message: `Update user data ID: ${id} finished`,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: 'failed',
+        message: 'Server Error',
+      });
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    try {
+      const id = req.params.id;
+      await user.destroy({
+        where: {
+          id,
+        },
+      });
+  
+      res.send({
+        status: 'success',
+        message: `Delete user id: ${id} finished`,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: 'failed',
+        message: 'Server Error',
+      });
+    }
+};
+
+/* const db = require("../database/connection");
+const { QueryTypes } = require("sequelize");
+
+exports.addUsers = async (req, res) => {
+    try {
+      const { email, password, name, status } = req.body;
+  
+      const query = `INSERT INTO users (email,password,name,status) VALUES ('${email}','${password}','${name}','${status}')`;
+  
+      await db.sequelize.query(query);
+  
+      res.send({
+        status: "success",
+        message: "Add user finished",
+        query,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: "failed",
+        message: "Server Error",
+      });
+    }
+  };
+
+//Mendapatkan semua data
+exports.getUsers = async (req, res) => {
+  try {
+    const query = "SELECT * FROM users";
+    const data = await db.sequelize.query(query, { type: QueryTypes.SELECT });
+
+    res.send({
+      status: "success",
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+//Mengambil satu data saja
+exports.getUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const data = await db.sequelize.query(
+        `SELECT * FROM users WHERE id = ${id}`,
+        { type: QueryTypes.SELECT }
+      );
+  
+      res.send({
+        status: "success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: "failed",
+        message: "Server Error",
+      });
+    }
+  };
+
+//Mengupdate data
+exports.updateUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const { email, password, name, status } = req.body;
+  
+      const query = `UPDATE users 
+                        SET email = '${email}', password = '${password}', name = '${name}', status = '${status}'
+                        WHERE id = ${id}`;
+  
+      await db.sequelize.query(query);
+  
+      res.send({
+        status: "success",
+        message: `Update user id: ${id} finished`,
+        data: req.body,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: "failed",
+        message: "Server Error",
+      });
+    }
+  };
+
+//Delete data
+exports.deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const query = `DELETE FROM users WHERE id = ${id}`;
+  
+      await db.sequelize.query(query);
+  
+      res.send({
+        status: "success",
+        message: `Delete user id: ${id} finished`,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send({
+        status: "failed",
+        message: "Server Error",
+      });
+    }
+  }; */

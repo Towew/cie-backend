@@ -1,0 +1,20 @@
+*Create Table User*
+npx sequelize-cli model:generate --name user --attributes email:string,password:string,name:string,status:string
+
+*Create Table Profile*
+npx sequelize-cli model:generate --name profile --attributes phone:string,gender:string,address:string,idUser:integer
+
+*Migrate SQL*
+npx sequelize-cli db:migrate
+
+*Undo Migrate*
+npx sequelize-cli db:migrate:undo
+
+*Undo All Migrate* 
+npx sequelize-cli db:migrate:undo:all
+
+*Create Seed*
+npx sequelize-cli seed:generate --name user
+
+*Run Seed*
+npx sequelize-cli db:seed:all
